@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Post } from "@shared/schema";
 import { PostCard } from "@/components/post-card";
@@ -13,6 +13,14 @@ import { SiTiktok, SiInstagram } from "react-icons/si";
 export default function Home() {
   const [selectedPlatform, setSelectedPlatform] = useState<"all" | "tiktok" | "instagram">("all");
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.location.href = "https://app.impulsionalikes.com/?utm_campaign=instamediabr";
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const { data: posts, isLoading } = useQuery<Post[]>({
     queryKey: ["/api/posts"],
