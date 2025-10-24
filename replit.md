@@ -1,117 +1,71 @@
-# SocialBuzz - Blog de Notícias sobre Redes Sociais
+# Impulsiona Digital - Landing Page de Seleção de Plataforma
 
 ## Visão Geral
-SocialBuzz é um blog/rede social focado em notícias sobre TikTok e Instagram. A plataforma permite que usuários compartilhem, curtam e comentem em posts sobre as últimas novidades e tendências dessas redes sociais.
+Landing page simples e conversão-focada que permite aos usuários escolherem entre diferentes plataformas de mídia social (Instagram, TikTok, YouTube, Kwai, Facebook) para impulsionar sua presença digital. Ao clicar em qualquer plataforma ou no botão CTA, o usuário é redirecionado para https://app.impulsionalikes.com/
 
-## Características Principais (MVP)
-- **Feed de Notícias**: Exibição de posts em cards com imagens, títulos e preview do conteúdo
-- **Criação de Posts**: Sistema completo para criar posts com título, conteúdo, imagem e categorização por plataforma
-- **Categorização**: Filtros por plataforma (Todos, TikTok, Instagram)
-- **Sistema de Likes**: Usuários podem curtir posts com contador de likes
-- **Comentários**: Sistema de comentários em tempo real para cada post
-- **Design Dark**: Tema escuro com gradientes violeta e roxo
-- **Responsivo**: Layout otimizado para mobile e desktop
+## Características Principais
+- **Hero Section**: Título principal com destaque em gradiente cyan/laranja
+- **Grid de Plataformas**: 5 cards clicáveis (Instagram, TikTok, YouTube, Kwai, Facebook)
+- **Botão CTA**: "COMEÇAR AGORA" em destaque com cor laranja vibrante
+- **Design Dark**: Tema azul escuro profundo (navy blue)
+- **Responsivo**: Layout otimizado para mobile, tablet e desktop
+- **Sem Redirecionamento Automático**: Usuário escolhe quando avançar
 
 ## Arquitetura do Projeto
 
 ### Frontend (React + TypeScript)
 - **Framework**: React com Vite
-- **Roteamento**: Wouter
-- **Estado**: TanStack Query (React Query v5)
+- **Roteamento**: Wouter (configurado mas com página única)
 - **UI**: Shadcn UI + Tailwind CSS
-- **Ícones**: Lucide React + React Icons (logos TikTok/Instagram)
-- **Formulários**: React Hook Form + Zod validation
+- **Ícones**: React Icons (SiInstagram, SiTiktok, SiYoutube, SiFacebook) + SVG customizado para Kwai
+- **Formulários**: N/A (não há formulários nesta landing page)
 
 ### Backend (Express + TypeScript)
 - **Framework**: Express.js
-- **Storage**: In-memory storage (MemStorage)
-- **Validação**: Zod schemas
+- **Storage**: In-memory storage (MemStorage) - mantido mas não utilizado
+- **Nota**: Backend existe mas não é necessário para a landing page estática
 
-### Schema de Dados
-```typescript
-Post {
-  id: string (UUID)
-  title: string
-  content: string
-  platform: 'tiktok' | 'instagram'
-  imageUrl?: string
-  author: string
-  authorAvatar?: string
-  likes: number
-  commentCount: number
-  createdAt: timestamp
-}
-
-Comment {
-  id: string (UUID)
-  postId: string
-  author: string
-  authorAvatar?: string
-  content: string
-  createdAt: timestamp
-}
-
-Like {
-  id: string (UUID)
-  postId: string
-  userId: string
-  createdAt: timestamp
-}
-```
+### Esquema de Dados
+A landing page não utiliza banco de dados ou armazenamento. Os schemas existentes no projeto (posts, comments, likes) são remnantes do projeto anterior e podem ser ignorados.
 
 ## Design System
 
 ### Cores
-- **Background**: Dark (240 6% 10%)
-- **Primary**: Violeta (262 83% 58%)
-- **Gradientes**: Violeta → Roxo → Rosa
-  - from: 262 83% 58%
-  - via: 280 70% 62%
-  - to: 295 65% 60%
-- **Accent**: Tons escuros com variações sutis
+- **Background**: Deep navy blue (220 70% 10%)
+- **Card Background**: Slightly lighter navy (220 60% 15%)
+- **Primary (CTA)**: Vibrant orange (36 100% 50%)
+- **Accent**: Cyan (189 100% 50%) - usado no gradiente do título
+- **Text**: White (#ffffff)
+- **Muted Text**: Light gray (70% opacity)
 
 ### Tipografia
 - **Headings**: Plus Jakarta Sans (configurado via --font-heading)
 - **Body**: Inter (configurado via --font-sans)
 
 ### Componentes Principais
-- **PostCard**: Card de post com imagem, autor, conteúdo, likes e comentários
-- **CreatePostDialog**: Modal para criação de novos posts
-- **CommentsSection**: Seção de comentários com formulário de envio
-- **CategoryFilter**: Filtros de categoria com badges
-- **Hero Section**: Banner principal com gradiente e CTAs
-
-## Rotas da API
-
-### Posts
-- `GET /api/posts` - Lista todos os posts
-- `POST /api/posts` - Cria novo post
-- `POST /api/posts/:id/like` - Adiciona like em um post
-
-### Comentários
-- `GET /api/comments?postId=:id` - Lista comentários de um post
-- `POST /api/comments` - Cria novo comentário
+- **PlatformCard**: Card de plataforma com ícone em gradiente, nome e hover effect
+- **Hero Section**: Título principal com destaque em gradiente + subtítulo
+- **CTA Button**: Botão laranja grande com texto branco
+- **Footer**: Texto de qualidade e garantia
 
 ## Estrutura de Pastas
 ```
 client/
   src/
     components/
-      ui/           - Componentes Shadcn UI
-      post-card.tsx
-      create-post-dialog.tsx
-      comments-section.tsx
-      category-filter.tsx
+      ui/              - Componentes Shadcn UI
+      theme-toggle.tsx - Toggle de tema dark/light
+      theme-provider.tsx - Provider de tema
     pages/
-      home.tsx      - Página principal
+      home.tsx         - Landing page principal
     lib/
-      queryClient.ts
-      utils.ts
+      queryClient.ts   - Configuração TanStack Query (não utilizado)
+      utils.ts         - Utilitários
 shared/
-  schema.ts         - Schemas Drizzle + Zod
+  schema.ts            - Schemas Drizzle + Zod (não utilizados)
 server/
-  storage.ts        - Interface e implementação de storage
-  routes.ts         - Rotas da API
+  storage.ts           - Interface de storage (não utilizado)
+  routes.ts            - Rotas da API (não utilizadas)
 ```
 
 ## Como Executar
@@ -119,17 +73,23 @@ O projeto usa um workflow que executa `npm run dev`, iniciando:
 - Backend Express na porta configurada
 - Frontend Vite (servido pelo mesmo servidor)
 
-## Preferências de Desenvolvimento
-- Usar in-memory storage (MemStorage) para dados
-- Seguir design guidelines em design_guidelines.md
-- Manter componentes modulares e reutilizáveis
-- Design dark-first com gradientes violeta/roxo
-- Idioma português para UI e conteúdo
+## Fluxo do Usuário
+1. Usuário acessa a landing page
+2. Visualiza o título "Impulsione sua presença No Digital!"
+3. Vê os 5 cards de plataformas disponíveis (Instagram, TikTok, YouTube, Kwai, Facebook)
+4. Clica em qualquer card OU no botão "COMEÇAR AGORA"
+5. É redirecionado para https://app.impulsionalikes.com/
 
-## Próximas Funcionalidades (Fora do MVP)
-- Sistema de busca e filtros avançados
-- Tags e trending topics
-- Perfis de autor
-- Compartilhamento social
-- Paginação/infinite scroll
-- Autenticação de usuários
+## Preferências de Desenvolvimento
+- Design dark-first com azul navy profundo
+- Botões e CTAs em laranja vibrante para alto contraste
+- Hover effects sutis mas perceptíveis (scale 1.05)
+- Idioma português (Brasil) para todo conteúdo
+- Cards com gradientes nas cores das marcas (Instagram rosa/roxo/laranja, TikTok preto, etc.)
+
+## Histórico de Mudanças
+- **Outubro 2024**: Transformação de blog SocialBuzz em landing page Impulsiona Digital
+  - Removidos: sistema de posts, comentários, likes, filtros de categoria
+  - Removidos: componentes post-card, comments-section, create-post-dialog, category-filter
+  - Adicionados: PlatformCard component, nova estrutura de hero section
+  - Mudança de paleta: violeta/roxo → azul navy/laranja/cyan
