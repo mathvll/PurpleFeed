@@ -1,4 +1,4 @@
-import { SiInstagram, SiTiktok, SiYoutube, SiFacebook } from "react-icons/si";
+import { SiInstagram, SiTiktok } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -21,28 +21,6 @@ const platforms: Platform[] = [
     name: "Tiktok",
     icon: SiTiktok,
     color: "from-black to-gray-800",
-  },
-  {
-    id: "youtube",
-    name: "YouTube",
-    icon: SiYoutube,
-    color: "from-red-600 to-red-700",
-  },
-  {
-    id: "kwai",
-    name: "Kwai",
-    icon: () => (
-      <svg className="w-16 h-16" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.82 8 12 11.82 4.18 8 12 4.18zM4 9.47l7 3.5v7.85l-7-3.5V9.47zm9 11.35v-7.85l7-3.5v7.85l-7 3.5z"/>
-      </svg>
-    ),
-    color: "from-orange-500 to-orange-600",
-  },
-  {
-    id: "facebook",
-    name: "FaceBook",
-    icon: SiFacebook,
-    color: "from-blue-600 to-blue-700",
   },
 ];
 
@@ -105,7 +83,7 @@ export default function Home() {
             </div>
 
             {/* Platform Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
               {platforms.map((platform) => (
                 <PlatformCard key={platform.id} platform={platform} />
               ))}

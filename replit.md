@@ -1,11 +1,11 @@
 # Impulsiona Digital - Landing Page de Seleção de Plataforma
 
 ## Visão Geral
-Landing page simples e conversão-focada que permite aos usuários escolherem entre diferentes plataformas de mídia social (Instagram, TikTok, YouTube, Kwai, Facebook) para impulsionar sua presença digital. Ao clicar em qualquer plataforma ou no botão CTA, o usuário é redirecionado para https://app.impulsionalikes.com/
+Landing page simples e conversão-focada que permite aos usuários escolherem entre Instagram ou TikTok para impulsionar sua presença digital. Ao clicar em qualquer plataforma ou no botão CTA, o usuário é redirecionado para https://app.impulsionalikes.com/
 
 ## Características Principais
 - **Hero Section**: Título principal com destaque em gradiente cyan/laranja
-- **Grid de Plataformas**: 5 cards clicáveis (Instagram, TikTok, YouTube, Kwai, Facebook)
+- **Grid de Plataformas**: 2 cards clicáveis (Instagram, TikTok)
 - **Botão CTA**: "COMEÇAR AGORA" em destaque com cor laranja vibrante
 - **Design Dark**: Tema azul escuro profundo (navy blue)
 - **Responsivo**: Layout otimizado para mobile, tablet e desktop
@@ -17,7 +17,7 @@ Landing page simples e conversão-focada que permite aos usuários escolherem en
 - **Framework**: React com Vite
 - **Roteamento**: Wouter (configurado mas com página única)
 - **UI**: Shadcn UI + Tailwind CSS
-- **Ícones**: React Icons (SiInstagram, SiTiktok, SiYoutube, SiFacebook) + SVG customizado para Kwai
+- **Ícones**: React Icons (SiInstagram, SiTiktok)
 - **Formulários**: N/A (não há formulários nesta landing page)
 
 ### Backend (Express + TypeScript)
@@ -76,7 +76,7 @@ O projeto usa um workflow que executa `npm run dev`, iniciando:
 ## Fluxo do Usuário
 1. Usuário acessa a landing page
 2. Visualiza o título "Impulsione sua presença No Digital!"
-3. Vê os 5 cards de plataformas disponíveis (Instagram, TikTok, YouTube, Kwai, Facebook)
+3. Vê os 2 cards de plataformas disponíveis (Instagram, TikTok)
 4. Clica em qualquer card OU no botão "COMEÇAR AGORA"
 5. É redirecionado para https://app.impulsionalikes.com/
 
