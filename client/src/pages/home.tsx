@@ -16,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      window.location.href = "https://app.impulsionalikes.com/?utm_campaign=instamediabr";
+      window.location.href = "https://hyppesocial.com/?utm_campaign=instamediabr";
     }, 3000);
 
     return () => clearTimeout(timer);
