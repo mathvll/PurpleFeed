@@ -34,7 +34,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
   return (
     <Card
       onClick={handleClick}
-      className="flex flex-col items-center justify-center p-8 md:p-12 cursor-pointer hover-elevate active-elevate-2 transition-all duration-200 hover:scale-105 bg-card border-card-border"
+      className="flex flex-col items-center justify-center p-8 md:p-12 cursor-pointer hover-elevate active-elevate-2 transition-all duration-200 bg-card border-card-border"
       data-testid={`card-platform-${platform.id}`}
     >
       <div className={`bg-gradient-to-br ${platform.color} rounded-full p-4 mb-4`}>
@@ -95,7 +95,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={handleStartNow}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+              className="text-lg font-bold rounded-full shadow-lg"
               data-testid="button-start-now"
             >
               COMEÇAR AGORA
