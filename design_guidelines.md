@@ -1,197 +1,148 @@
-# Design Guidelines: TikTok & Instagram News Social Blog
+# Design Guidelines: Landing Page Impulsiona Digital
 
 ## Design Approach
 
-**Reference-Based Strategy**: Drawing inspiration from Instagram's card-based feed aesthetics combined with Medium's content readability and Twitter's engagement patterns. The dark theme with violet/purple gradients creates a distinctive, modern identity that differentiates from standard news platforms.
+**Landing Page Strategy**: Clean, conversion-focused design inspired by the provided mockup. Dark blue background with bold orange CTA creating high contrast and clear call-to-action. Platform selection cards are the primary interaction elements, designed for immediate visual recognition and easy clicking.
 
 ## Typography System
 
 **Font Families** (via Google Fonts):
 - Primary: 'Inter' - for UI elements, buttons, navigation (weights: 400, 500, 600, 700)
-- Headings: 'Plus Jakarta Sans' - for post titles and section headers (weights: 600, 700, 800)
-- Body: 'Inter' - for post content and descriptions (weight: 400, 500)
+- Headings: 'Plus Jakarta Sans' - for hero titles and section headers (weights: 600, 700, 800)
 
 **Hierarchy**:
-- Hero/Main Headlines: 3xl to 5xl, bold (Plus Jakarta Sans)
-- Post Titles: xl to 2xl, semibold (Plus Jakarta Sans)
-- Section Headers: lg to xl, semibold (Plus Jakarta Sans)
+- Hero Headlines: 4xl to 6xl, bold (Plus Jakarta Sans)
+- Section Headers: 2xl to 3xl, semibold (Plus Jakarta Sans)
+- Platform Names: xl, semibold (Plus Jakarta Sans)
 - Body Text: base to lg, regular (Inter)
-- Meta Info (dates, authors, counts): sm to base, medium (Inter)
-- Captions/Labels: xs to sm, medium (Inter)
+- Footer Text: sm, regular (Inter)
+
+## Color Palette
+
+**Background**:
+- Main: Deep navy blue (#0a1628 / 220 70% 10%)
+- Card background: Slightly lighter navy (#1a2640 / 220 60% 15%)
+
+**Accent Colors**:
+- Primary CTA: Vibrant orange (#ff9800 / 36 100% 50%)
+- Gradient highlight: Cyan accent for "No Digital!" text (#00e5ff / 189 100% 50%)
+
+**Text**:
+- Primary: White (#ffffff)
+- Secondary: Light gray (rgba(255, 255, 255, 0.8))
+- Footer: Muted white (rgba(255, 255, 255, 0.7))
 
 ## Layout System
 
-**Spacing Primitives**: Use Tailwind units of 2, 4, 6, 8, 12, 16, and 24 for consistent rhythm
-- Component padding: p-4, p-6, p-8
-- Section spacing: py-12, py-16, py-24
-- Card gaps: gap-4, gap-6, gap-8
-- Margins: m-4, m-6, m-8
+**Spacing Primitives**: Consistent spacing using Tailwind units
+- Hero padding: py-16 to py-24
+- Card gaps: gap-6 to gap-8
+- Section spacing: py-12 to py-16
+- Container padding: px-4 to px-8
 
 **Container Strategy**:
-- Main content: max-w-7xl mx-auto px-4
-- Post feed: max-w-4xl mx-auto
-- Reading content: max-w-3xl
-- Sidebar elements: w-80 to w-96
-
-**Grid Layouts**:
-- Desktop feed: 2-column masonry grid (grid-cols-2 gap-6)
-- Tablet: Single column (grid-cols-1)
-- Featured posts: Full-width hero cards
-- Sidebar widgets: Stacked vertical layout
+- Main content: max-w-6xl mx-auto
+- Hero section: Full width with centered content
+- Platform grid: 2x3 grid on desktop, single column on mobile
 
 ## Component Library
 
-### Navigation
-**Top Navigation Bar**:
-- Fixed header with backdrop blur effect
-- Logo left-aligned with gradient text treatment
-- Main nav items: Feed, TikTok, Instagram, Criar Post (center-aligned)
-- Search bar with icon (medium width, rounded-full)
-- User profile avatar and notification bell (right-aligned)
-- Mobile: Hamburger menu with slide-out drawer
+### Hero Section
+**Main Banner**:
+- Large heading: "Impulsione sua presença No Digital!"
+  - "No Digital!" highlighted with cyan gradient
+- Subtitle: "Somos a escolha preferida dos clientes por nossa excelência, custo-benefício e Suporte."
+- Clean, centered layout
+- Ample white space for readability
 
-### Feed Components
+### Platform Selection
+**Section Title**:
+- "Escolha a melhor opção"
+- Subtitle: "Encontre o serviço certo para você e comece agora."
 
-**Post Cards** (Primary Content):
-- Elevated cards with subtle border and shadow depth
-- Card header: Platform badge (TikTok/Instagram with icon), author info, timestamp
-- Featured image with 16:9 or 4:3 aspect ratio, rounded-lg corners, object-cover
-- Post title: Bold, 2xl, clickable
-- Content preview: 3-4 lines with gradient fade-out
-- Engagement bar footer: Like button with count, comment icon with count, share button, bookmark
-- Hover state: Subtle lift effect (translate-y-1)
+**Platform Cards**:
+- 2x3 grid layout (Instagram, TikTok, YouTube, Kwai, Facebook)
+- Each card includes:
+  - Platform icon (large, centered)
+  - Platform name (centered below icon)
+  - Dark blue background with subtle border
+  - Hover effect: Brightness increase and subtle scale
+  - Click redirects to https://app.impulsionalikes.com/
+- Card design:
+  - Rounded corners (rounded-lg)
+  - Padding: p-8 to p-12
+  - Aspect ratio: Square or near-square
+  - Icon size: 64px to 80px
 
-**Category Pills**:
-- Horizontal scroll on mobile
-- Rounded-full badges with icons
-- "Todos", "TikTok", "Instagram", "Tendências", "Novidades"
-- Active state: Filled with gradient background
+**Platform Icons**:
+- Instagram: Gradient pink/purple/orange icon
+- TikTok: Black background with white musical note
+- YouTube: Red play button icon
+- Kwai: Orange video camera icon
+- Facebook: Blue 'f' icon
 
-**Trending Sidebar Widget**:
-- "Em Alta" header with flame icon
-- Compact list of trending topics (5-7 items)
-- Each item: Small thumbnail, truncated title, view count
-- Numbered ranking indicators
+### CTA Button
+**"COMEÇAR AGORA" Button**:
+- Vibrant orange background (#ff9800)
+- Large size with prominent placement
+- Rounded-full shape
+- White text, bold weight
+- Hover: Slight brightness increase
+- Center-aligned below platform cards
 
-### Post Creation Interface
-
-**Create Post Form**:
-- Modal overlay or dedicated page
-- Platform selector (toggle between TikTok/Instagram)
-- Title input: Large, prominent text field
-- Rich text editor for content with formatting toolbar
-- Image upload area: Drag-and-drop zone with preview
-- Category/tags selector with autocomplete
-- Publish button: Prominent gradient CTA
-
-### Engagement Elements
-
-**Like Button**:
-- Heart icon (Heroicons) that fills on interaction
-- Animated scale pulse on click
-- Counter beside icon
-
-**Comment Section**:
-- Nested thread design (max 2 levels)
-- Avatar + username + timestamp
-- Reply button inline
-- Comment input: Rounded text area with emoji picker
-- Sort options: Mais Recentes, Mais Curtidos
-
-**Share Menu**:
-- Dropdown with share options
-- Copy link, WhatsApp, Twitter, Facebook
-- Icons from Heroicons
-
-### Content Display
-
-**Full Post View**:
-- Hero image: Full-width, max-h-96, object-cover
-- Breadcrumb navigation above title
-- Large title (3xl to 4xl)
-- Author byline with avatar, name, date, read time
-- Share and bookmark buttons (floating or sticky)
-- Content in readable column (max-w-3xl)
-- Related posts carousel at bottom
-
-**User Profile Card**:
-- Avatar with gradient border ring
-- Display name + username
-- Bio (2-3 lines)
-- Stats row: Posts count, Followers, Following
-- Follow/Seguir button with gradient
-
-## Images
-
-**Hero Section**: 
-- Large hero banner showcasing vibrant social media imagery
-- Abstract composition blending TikTok/Instagram visual elements
-- Gradient overlay from dark purple at top to transparent at bottom
-- Text overlaid: "Últimas Notícias" + "TikTok & Instagram" tagline
-- CTA buttons with blur backdrop
-
-**Post Images**:
-- Each post card includes featured image
-- Mix of screenshots from TikTok/Instagram, creator photos, app interface mockups
-- Aspect ratios: 16:9 for landscape, 4:3 for featured content
-- All images use rounded-lg corners and object-cover fit
-
-**Background Elements**:
-- Subtle gradient mesh backgrounds in sections
-- Floating geometric shapes with blur (very subtle, not distracting)
-- Grid patterns overlaid at low opacity
-
-## Interaction Patterns
-
-**Animations** (Minimal and Purposeful):
-- Page transitions: Smooth fade-in (300ms)
-- Card hover: Subtle lift with shadow increase
-- Button clicks: Quick scale bounce
-- Like animation: Heart fill with scale pulse
-- Modal open/close: Fade + scale from center
-- Infinite scroll: Smooth loading state with skeleton cards
-
-**Micro-interactions**:
-- Toast notifications for actions (post created, liked, etc.)
-- Progress indicators for image uploads
-- Loading skeletons matching card structure
-- Pull-to-refresh on mobile feed
+### Footer
+**Quality Statement**:
+- "Serviços de alta qualidade e entrega rápida garantidos"
+- Centered text
+- Muted white color
+- Small to medium font size
 
 ## Responsive Behavior
 
 **Desktop (lg and up)**:
-- Three-column layout: Sidebar left (categories), Main feed center, Trending right
-- Fixed navigation and sidebars with scrollable center
-- 2-column post grid in feed
+- 2x3 grid for platform cards
+- Larger hero text (5xl to 6xl)
+- Spacious padding throughout
 
 **Tablet (md)**:
-- Two-column layout: Main feed + collapsible sidebar
-- Single column post grid
-- Bottom navigation bar option
+- 2x2 grid with 5th card centered or wrapping
+- Medium hero text (4xl to 5xl)
+- Moderate padding
 
 **Mobile (base)**:
-- Single column stacked layout
-- Bottom tab navigation: Feed, Criar, Perfil
-- Horizontal scroll category pills
-- Swipe gestures for post navigation
+- Single column layout
+- Smaller hero text (3xl to 4xl)
+- Stacked platform cards
+- Full-width CTA button
+- Compact spacing
+
+## Interaction Patterns
+
+**Animations** (Subtle and Professional):
+- Card hover: Brightness increase + subtle scale (1.02)
+- Button hover: Brightness increase
+- Page load: Smooth fade-in
+- All transitions: 200-300ms duration
+
+**Micro-interactions**:
+- Card click: Immediate navigation (no delay)
+- Button click: Instant feedback
+- Hover states: Clear visual indication
 
 ## Accessibility Standards
 
-- All interactive elements have focus states with ring
-- Icon buttons include aria-labels
-- Semantic HTML: <article>, <nav>, <main>, <aside>
-- Keyboard navigation support throughout
-- Alt text for all images
-- Color contrast meets WCAG AA (light text on dark backgrounds)
-- Form inputs have associated labels
-- Screen reader announcements for dynamic content updates
+- All platform cards have proper labels and ARIA attributes
+- Keyboard navigation: Tab through cards and button
+- Focus states: Clear ring indicators
+- Semantic HTML: <main>, <section>, <button>
+- Alt text for platform icons
+- High contrast text on dark background
+- Touch targets minimum 44px for mobile
 
 ## Special Features
 
-**Infinite Scroll Feed**: Auto-load more posts with intersection observer
-**Search with Filters**: Real-time search with platform, date, popularity filters
-**Bookmark System**: Save posts for later reading
-**Notification Center**: Bell icon with badge counter, dropdown list
-**Dark Mode Native**: Built dark-first, no toggle needed per requirements
+**Single-Page Focus**: No navigation, no distractions - entire page dedicated to platform selection
+**Instant Redirect**: Click any platform card → immediate redirect to app.impulsionalikes.com
+**Conversion Optimized**: Clear hierarchy guiding user to action
 
-This design creates a visually striking, modern social blog that feels native to TikTok/Instagram culture while maintaining excellent readability and engagement patterns.
+This design creates a clean, professional landing page that immediately communicates value and guides users to select their preferred platform.
