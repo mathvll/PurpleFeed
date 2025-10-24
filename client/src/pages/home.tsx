@@ -1,186 +1,137 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Post } from "@shared/schema";
-import { PostCard } from "@/components/post-card";
-import { CreatePostDialog } from "@/components/create-post-dialog";
-import { CategoryFilter } from "@/components/category-filter";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiInstagram, SiTiktok, SiYoutube, SiFacebook } from "react-icons/si";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, TrendingUp } from "lucide-react";
-import { SiTiktok, SiInstagram } from "react-icons/si";
+import { Card } from "@/components/ui/card";
 
-export default function Home() {
-  const [selectedPlatform, setSelectedPlatform] = useState<"all" | "tiktok" | "instagram">("all");
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+interface Platform {
+  id: string;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+}
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.location.href = "https://hyppesocial.com/?utm_campaign=instamediabr";
-    }, 3000);
+const platforms: Platform[] = [
+  {
+    id: "instagram",
+    name: "Instagram",
+    icon: SiInstagram,
+    color: "from-purple-600 via-pink-600 to-orange-500",
+  },
+  {
+    id: "tiktok",
+    name: "Tiktok",
+    icon: SiTiktok,
+    color: "from-black to-gray-800",
+  },
+  {
+    id: "youtube",
+    name: "YouTube",
+    icon: SiYoutube,
+    color: "from-red-600 to-red-700",
+  },
+  {
+    id: "kwai",
+    name: "Kwai",
+    icon: () => (
+      <svg className="w-16 h-16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.82 8 12 11.82 4.18 8 12 4.18zM4 9.47l7 3.5v7.85l-7-3.5V9.47zm9 11.35v-7.85l7-3.5v7.85l-7 3.5z"/>
+      </svg>
+    ),
+    color: "from-orange-500 to-orange-600",
+  },
+  {
+    id: "facebook",
+    name: "FaceBook",
+    icon: SiFacebook,
+    color: "from-blue-600 to-blue-700",
+  },
+];
 
-    return () => clearTimeout(timer);
-  }, []);
+function PlatformCard({ platform }: { platform: Platform }) {
+  const handleClick = () => {
+    window.location.href = "https://app.impulsionalikes.com/";
+  };
 
-  const { data: posts, isLoading } = useQuery<Post[]>({
-    queryKey: ["/api/posts"],
-  });
-
-  const filteredPosts = posts?.filter(post => 
-    selectedPlatform === "all" ? true : post.platform === selectedPlatform
-  );
+  const Icon = platform.icon;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header with Theme Toggle */}
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-[hsl(var(--gradient-from))] to-[hsl(var(--gradient-to))] bg-clip-text text-transparent font-[family-name:var(--font-heading)]">
-            SocialBuzz
-          </h2>
-          <ThemeToggle />
-        </div>
-      </header>
-
-      {/* Hero Section with Gradient */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--gradient-from))] via-[hsl(var(--gradient-via))] to-[hsl(var(--gradient-to))] py-16 px-4">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background"></div>
-        <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 font-[family-name:var(--font-heading)]" data-testid="text-hero-title">
-            Últimas Notícias
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8" data-testid="text-hero-subtitle">
-            TikTok & Instagram
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
-              onClick={() => setCreateDialogOpen(true)}
-              data-testid="button-create-post-hero"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Criar Post
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
-              data-testid="button-trending"
-            >
-              <TrendingUp className="w-5 h-5 mr-2" />
-              Tendências
-            </Button>
-          </div>
-        </div>
+    <Card
+      onClick={handleClick}
+      className="flex flex-col items-center justify-center p-8 md:p-12 cursor-pointer hover-elevate active-elevate-2 transition-all duration-200 hover:scale-105 bg-card border-card-border"
+      data-testid={`card-platform-${platform.id}`}
+    >
+      <div className={`bg-gradient-to-br ${platform.color} rounded-full p-4 mb-4`}>
+        <Icon className="w-16 h-16 text-white" />
       </div>
+      <h3 className="text-xl font-semibold text-card-foreground font-[family-name:var(--font-heading)]" data-testid={`text-platform-${platform.id}`}>
+        {platform.name}
+      </h3>
+    </Card>
+  );
+}
 
+export default function Home() {
+  const handleStartNow = () => {
+    window.location.href = "https://app.impulsionalikes.com/";
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Category Filters */}
-        <div className="mb-8">
-          <CategoryFilter 
-            selected={selectedPlatform}
-            onSelect={setSelectedPlatform}
-          />
-        </div>
-
-        {/* Stats Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-card border border-card-border rounded-lg p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[hsl(var(--gradient-from))] to-[hsl(var(--gradient-via))] flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground" data-testid="text-total-posts">{posts?.length || 0}</p>
-                <p className="text-sm text-muted-foreground">Posts Totais</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card border border-card-border rounded-lg p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FF0050] to-[#00F2EA] flex items-center justify-center">
-                <SiTiktok className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground" data-testid="text-tiktok-posts">
-                  {posts?.filter(p => p.platform === 'tiktok').length || 0}
-                </p>
-                <p className="text-sm text-muted-foreground">TikTok</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card border border-card-border rounded-lg p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] flex items-center justify-center">
-                <SiInstagram className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground" data-testid="text-instagram-posts">
-                  {posts?.filter(p => p.platform === 'instagram').length || 0}
-                </p>
-                <p className="text-sm text-muted-foreground">Instagram</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Posts Grid */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="space-y-4">
-                <Skeleton className="h-48 w-full rounded-lg" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-              </div>
-            ))}
-          </div>
-        ) : filteredPosts && filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[hsl(var(--gradient-from))] to-[hsl(var(--gradient-to))] flex items-center justify-center">
-              <Plus className="w-12 h-12 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2" data-testid="text-empty-state">
-              Nenhum post encontrado
-            </h3>
-            <p className="text-muted-foreground mb-6">
-              Seja o primeiro a compartilhar novidades sobre {selectedPlatform === "all" ? "redes sociais" : selectedPlatform === "tiktok" ? "TikTok" : "Instagram"}!
+      <main className="flex-1 flex items-center justify-center px-4 py-12 md:py-16">
+        <div className="max-w-6xl mx-auto w-full">
+          {/* Hero Section */}
+          <div className="text-center mb-12 md:mb-16">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 font-[family-name:var(--font-heading)]" data-testid="text-hero-title">
+              Impulsione sua presença{" "}
+              <span className="bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--primary))] bg-clip-text text-transparent">
+                No Digital!
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-hero-subtitle">
+              Somos a escolha preferida dos clientes por nossa excelência, custo-benefício e{" "}
+              <span className="font-semibold text-foreground">Suporte</span>.
             </p>
-            <Button 
-              onClick={() => setCreateDialogOpen(true)}
-              data-testid="button-create-first-post"
+          </div>
+
+          {/* Platform Selection Section */}
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-[family-name:var(--font-heading)]" data-testid="text-section-title">
+                Escolha a melhor opção
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground" data-testid="text-section-subtitle">
+                Encontre o serviço certo para você e comece agora.
+              </p>
+            </div>
+
+            {/* Platform Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {platforms.map((platform) => (
+                <PlatformCard key={platform.id} platform={platform} />
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center mb-8">
+            <Button
+              size="lg"
+              onClick={handleStartNow}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+              data-testid="button-start-now"
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Criar Primeiro Post
+              COMEÇAR AGORA
             </Button>
           </div>
-        )}
-      </div>
+        </div>
+      </main>
 
-      {/* Floating Action Button for Mobile */}
-      <Button
-        size="icon"
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-xl md:hidden bg-gradient-to-br from-[hsl(var(--gradient-from))] to-[hsl(var(--gradient-to))] border-0"
-        onClick={() => setCreateDialogOpen(true)}
-        data-testid="button-create-post-fab"
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
-
-      <CreatePostDialog 
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-      />
+      {/* Footer */}
+      <footer className="py-6 text-center">
+        <p className="text-sm md:text-base text-muted-foreground" data-testid="text-footer">
+          Serviços de alta qualidade e entrega rápida garantidos
+        </p>
+      </footer>
     </div>
   );
 }
