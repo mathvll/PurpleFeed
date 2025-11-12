@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertPostSchema, insertCommentSchema, insertLikeSchema } from "@shared/schema";
+import { insertPostSchema, insertCommentSchema, insertLikeSchema, insertTrackingSchema } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -115,6 +115,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating comment:", error);
       res.status(500).json({ error: "Failed to create comment" });
+    }
+  });
+
+  // Tracking route
+  app.post("/api/tracking", async (req, res) => {
+    try {
+      const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+      
+      const result = insertTrackingSchema.safeParse({
+        gclid: req.body.gclid,
+        ipAddress: Array.isArray(ipAddress) ? ipAddress[0] : ipAddress,
+      });
+
+      if (!result.success) {
+        const validationError = fromZodError(result.error);
+        return res.status(400).json({ error: validationError.message });
+      }
+
+      const tracking = await storage.createTracking(result.data);
+      res.status(201).json(tracking);
+    } catch (error) {
+      console.error("Error creating tracking:", error);
+      res.status(500).json({ error: "Failed to create tracking" });
     }
   });
 

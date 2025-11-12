@@ -74,3 +74,19 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+// Tracking table for GCLID
+export const tracking = pgTable("tracking", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  gclid: text("gclid").notNull(),
+  ipAddress: text("ip_address").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertTrackingSchema = createInsertSchema(tracking).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertTracking = z.infer<typeof insertTrackingSchema>;
+export type Tracking = typeof tracking.$inferSelect;
