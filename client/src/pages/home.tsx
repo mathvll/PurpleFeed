@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SiInstagram, SiTiktok } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -60,6 +61,23 @@ function PlatformCard({ platform }: { platform: Platform }) {
 }
 
 export default function Home() {
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gclid = urlParams.get("gclid");
+    
+    if (gclid) {
+      fetch("/api/tracking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gclid }),
+      }).catch((error) => {
+        console.error("Failed to track visit:", error);
+      });
+    }
+  }, []);
+
   const handleStartNow = () => {
     window.location.href = buildRedirectUrl();
   };
