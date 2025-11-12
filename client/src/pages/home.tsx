@@ -24,9 +24,21 @@ const platforms: Platform[] = [
   },
 ];
 
+function buildRedirectUrl(): string {
+  const baseUrl = "https://app.impulsionalikes.com/";
+  const urlParams = new URLSearchParams(window.location.search);
+  const gclid = urlParams.get("gclid");
+  
+  if (gclid) {
+    return `${baseUrl}?gclid=${gclid}`;
+  }
+  
+  return baseUrl;
+}
+
 function PlatformCard({ platform }: { platform: Platform }) {
   const handleClick = () => {
-    window.location.href = "https://app.impulsionalikes.com/";
+    window.location.href = buildRedirectUrl();
   };
 
   const Icon = platform.icon;
@@ -49,7 +61,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
 
 export default function Home() {
   const handleStartNow = () => {
-    window.location.href = "https://app.impulsionalikes.com/";
+    window.location.href = buildRedirectUrl();
   };
 
   return (

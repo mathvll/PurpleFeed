@@ -10,6 +10,8 @@ Landing page simples e conversão-focada que permite aos usuários escolherem en
 - **Design Dark**: Tema azul escuro profundo (navy blue)
 - **Responsivo**: Layout otimizado para mobile, tablet e desktop
 - **Sem Redirecionamento Automático**: Usuário escolhe quando avançar
+- **Rastreamento Google**: Tags do Google Ads (AW-17677254109) e Google Analytics (G-EE040QLBY2)
+- **Preservação de GCLID**: Captura e repassa automaticamente o parâmetro `gclid` da URL para o link de destino
 
 ## Arquitetura do Projeto
 
@@ -47,6 +49,7 @@ A landing page não utiliza banco de dados ou armazenamento. Os schemas existent
 - **Hero Section**: Título principal com destaque em gradiente + subtítulo
 - **CTA Button**: Botão laranja grande com texto branco
 - **Footer**: Texto de qualidade e garantia
+- **buildRedirectUrl()**: Função helper que captura `gclid` da URL e constrói o link de redirecionamento
 
 ## Estrutura de Pastas
 ```
@@ -74,11 +77,13 @@ O projeto usa um workflow que executa `npm run dev`, iniciando:
 - Frontend Vite (servido pelo mesmo servidor)
 
 ## Fluxo do Usuário
-1. Usuário acessa a landing page
+1. Usuário acessa a landing page (opcionalmente com parâmetro `gclid` na URL)
 2. Visualiza o título "Impulsione sua presença No Digital!"
 3. Vê os 2 cards de plataformas disponíveis (Instagram, TikTok)
 4. Clica em qualquer card OU no botão "COMEÇAR AGORA"
 5. É redirecionado para https://app.impulsionalikes.com/
+   - Se a URL original continha `gclid`, ele é preservado: `https://app.impulsionalikes.com/?gclid=ABC123`
+   - Caso contrário, redireciona para URL base sem parâmetros
 
 ## Preferências de Desenvolvimento
 - Design dark-first com azul navy profundo
@@ -88,6 +93,11 @@ O projeto usa um workflow que executa `npm run dev`, iniciando:
 - Cards com gradientes nas cores das marcas (Instagram rosa/roxo/laranja, TikTok preto, etc.)
 
 ## Histórico de Mudanças
+- **Novembro 2024**: Adicionadas tags de rastreamento e preservação de GCLID
+  - Adicionada tag Google Analytics (G-EE040QLBY2) no head do HTML
+  - Adicionada tag Google Ads (AW-17677254109) no head do HTML
+  - Implementada captura automática do parâmetro `gclid` da URL
+  - Função `buildRedirectUrl()` garante que `gclid` seja repassado ao app externo
 - **Outubro 2024**: Transformação de blog SocialBuzz em landing page Impulsiona Digital
   - Removidos: sistema de posts, comentários, likes, filtros de categoria
   - Removidos: componentes post-card, comments-section, create-post-dialog, category-filter
