@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { SiInstagram, SiTiktok } from "react-icons/si";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const LOADING_DURATION_MS = 1500;
 const FADE_OUT_DURATION_MS = 1000;
+const FOLLOW_UP_MODAL_DELAY_MS = 10000;
+const WHATSAPP_PHONE_NUMBER = "5522992829808";
+const WHATSAPP_DISPLAY_PHONE = "+55 22 99282-9808";
+const WHATSAPP_MESSAGE =
+  "Olá, gostaria de saber mais sobre como funciona a Loja ImpulsionaLikes";
 
 type LandingMode = "root" | "onboarding";
 
@@ -50,6 +55,12 @@ function buildRedirectUrl(baseUrl: string, social?: Platform["id"]): string {
   return targetUrl.toString();
 }
 
+function buildWhatsAppUrl(): string {
+  return `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(
+    WHATSAPP_MESSAGE,
+  )}`;
+}
+
 function LandingPage({
   destinationUrl,
   mode,
@@ -59,6 +70,7 @@ function LandingPage({
 }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
   const [selectedSocial, setSelectedSocial] = useState<Platform["id"] | null>(null);
   const timersRef = useRef<number[]>([]);
   const transitionLockRef = useRef(false);
@@ -114,6 +126,16 @@ function LandingPage({
 
     setIsTransitioning(true);
     setIsFadingOut(false);
+    setShowFollowUpModal(false);
+
+    if (openInNewTab) {
+      scheduleTimer(() => {
+        setIsTransitioning(false);
+        setIsFadingOut(false);
+        setShowFollowUpModal(true);
+        transitionLockRef.current = false;
+      }, FOLLOW_UP_MODAL_DELAY_MS);
+    }
 
     scheduleTimer(() => {
       setIsFadingOut(true);
@@ -278,6 +300,35 @@ function LandingPage({
         >
           <LoaderCircle className="h-8 w-8 animate-spin text-white" />
           <p className="mt-4 text-lg font-semibold text-white">Carregando...</p>
+        </div>
+      )}
+
+      {showFollowUpModal && isOnboarding && (
+        <div className="follow-up-backdrop">
+          <div
+            aria-labelledby="follow-up-title"
+            aria-modal="true"
+            className="follow-up-modal"
+            role="dialog"
+          >
+            <div className="follow-up-icon" aria-hidden="true">
+              <MessageCircle className="h-7 w-7" />
+            </div>
+            <h2 id="follow-up-title">Opa, Eaí, deu tudo certo ?</h2>
+            <p>
+              Caso precise de mais informações sobre como funciona, ou outra
+              coisa, pode nos mandar mensagem clicando no botão abaixo
+            </p>
+            <a
+              className="whatsapp-cta"
+              href={buildWhatsAppUrl()}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
+              <span>{WHATSAPP_DISPLAY_PHONE}</span>
+            </a>
+          </div>
         </div>
       )}
     </div>
