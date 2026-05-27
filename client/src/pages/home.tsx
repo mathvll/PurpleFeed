@@ -25,8 +25,7 @@ const platforms: Platform[] = [
   },
 ];
 
-function buildRedirectUrl(): string {
-  const baseUrl = "https://app.impulsionalikes.com/";
+function buildRedirectUrl(baseUrl: string): string {
   const urlParams = new URLSearchParams(window.location.search);
   const gclid = urlParams.get("gclid");
   
@@ -37,9 +36,15 @@ function buildRedirectUrl(): string {
   return baseUrl;
 }
 
-function PlatformCard({ platform }: { platform: Platform }) {
+function PlatformCard({
+  platform,
+  destinationUrl,
+}: {
+  platform: Platform;
+  destinationUrl: string;
+}) {
   const handleClick = () => {
-    window.location.href = buildRedirectUrl();
+    window.location.href = buildRedirectUrl(destinationUrl);
   };
 
   const Icon = platform.icon;
@@ -60,7 +65,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
   );
 }
 
-export default function Home() {
+function LandingPage({ destinationUrl }: { destinationUrl: string }) {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const gclid = urlParams.get("gclid");
@@ -79,7 +84,7 @@ export default function Home() {
   }, []);
 
   const handleStartNow = () => {
-    window.location.href = buildRedirectUrl();
+    window.location.href = buildRedirectUrl(destinationUrl);
   };
 
   return (
@@ -115,7 +120,11 @@ export default function Home() {
             {/* Platform Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
               {platforms.map((platform) => (
-                <PlatformCard key={platform.id} platform={platform} />
+                <PlatformCard
+                  key={platform.id}
+                  platform={platform}
+                  destinationUrl={destinationUrl}
+                />
               ))}
             </div>
           </div>
@@ -141,5 +150,15 @@ export default function Home() {
         </p>
       </footer>
     </div>
+  );
+}
+
+export default function Home() {
+  return <LandingPage destinationUrl="https://app.impulsionalikes.com/" />;
+}
+
+export function Onboarding() {
+  return (
+    <LandingPage destinationUrl="https://app.impulsionalikes.com/impulsionar" />
   );
 }
