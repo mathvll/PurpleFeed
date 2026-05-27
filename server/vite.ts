@@ -5,6 +5,10 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
+import { getAppRoot, loadProjectEnv } from "../env";
+
+loadProjectEnv(path.resolve(import.meta.dirname, ".."));
+const appRoot = getAppRoot(path.resolve(import.meta.dirname, ".."));
 
 const viteLogger = createLogger();
 
@@ -46,8 +50,7 @@ export async function setupVite(app: Express, server: Server) {
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
+        appRoot,
         "client",
         "index.html",
       );
@@ -68,7 +71,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(appRoot, "dist", "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
