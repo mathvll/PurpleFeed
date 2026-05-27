@@ -4,9 +4,9 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { getAppRoot, loadProjectEnv } from "./env";
 
-loadProjectEnv(import.meta.dirname);
+loadProjectEnv(process.cwd());
 
-const appRoot = getAppRoot(import.meta.dirname);
+const appRoot = getAppRoot(process.cwd());
 
 export default defineConfig({
   plugins: [

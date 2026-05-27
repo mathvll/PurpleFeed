@@ -1,4 +1,3 @@
-import path from "path";
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
@@ -6,7 +5,7 @@ import * as schema from "@shared/schema";
 import { loadProjectEnv } from "../env";
 
 neonConfig.webSocketConstructor = ws;
-loadProjectEnv(path.resolve(import.meta.dirname, ".."));
+loadProjectEnv(process.cwd());
 
 if (!process.env.DATABASE_URL) {
   throw new Error(

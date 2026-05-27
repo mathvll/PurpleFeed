@@ -7,8 +7,8 @@ import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
 import { getAppRoot, loadProjectEnv } from "../env";
 
-loadProjectEnv(path.resolve(import.meta.dirname, ".."));
-const appRoot = getAppRoot(path.resolve(import.meta.dirname, ".."));
+loadProjectEnv(process.cwd());
+const appRoot = getAppRoot(process.cwd());
 
 const viteLogger = createLogger();
 

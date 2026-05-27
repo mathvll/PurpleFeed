@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 import { loadProjectEnv } from "./env";
 
-loadProjectEnv(import.meta.dirname);
+loadProjectEnv(process.cwd());
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL, ensure the database is provisioned");
