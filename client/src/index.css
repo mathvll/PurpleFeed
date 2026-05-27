@@ -252,6 +252,214 @@
   }
 }
 
+.native-shell {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 120% at 20% 0%, hsl(var(--accent) / 0.18), transparent 48%),
+    radial-gradient(80% 80% at 85% 10%, hsl(var(--primary) / 0.18), transparent 50%),
+    linear-gradient(180deg, hsl(220 72% 11%), hsl(220 68% 8%));
+}
+
+.native-bg-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.native-bg-orb--one {
+  width: 280px;
+  height: 280px;
+  top: -120px;
+  left: -120px;
+  opacity: 0.44;
+  background: radial-gradient(circle at 30% 30%, hsl(var(--accent) / 0.9), transparent 72%);
+  animation: drift-orb 11s ease-in-out infinite;
+}
+
+.native-bg-orb--two {
+  width: 320px;
+  height: 320px;
+  right: -130px;
+  bottom: -160px;
+  opacity: 0.36;
+  background: radial-gradient(circle at 65% 35%, hsl(var(--primary) / 0.85), transparent 70%);
+  animation: drift-orb 13s ease-in-out infinite reverse;
+}
+
+.glass-panel {
+  background: linear-gradient(170deg, hsl(220 45% 17% / 0.9), hsl(220 42% 14% / 0.78));
+  border: 1px solid hsl(220 44% 31% / 0.4);
+  box-shadow:
+    0 20px 36px hsl(220 66% 3% / 0.5),
+    inset 0 1px 0 hsl(0 0% 100% / 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.headline-gradient {
+  background: linear-gradient(120deg, hsl(var(--accent)), hsl(var(--primary)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.platform-card {
+  animation: rise-up 0.6s ease both;
+  cursor: pointer;
+  border-radius: 1.3rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background: linear-gradient(180deg, hsl(220 56% 17%), hsl(220 52% 14%));
+  border: 1px solid hsl(220 44% 30%);
+  box-shadow:
+    0 10px 24px hsl(220 75% 4% / 0.5),
+    inset 0 1px 0 hsl(0 0% 100% / 0.05);
+  transform-origin: center;
+  transition:
+    transform 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease,
+    background 250ms ease;
+}
+
+.platform-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: hsl(var(--accent) / 0.55);
+  background: linear-gradient(180deg, hsl(220 56% 19%), hsl(220 50% 15%));
+}
+
+.platform-card:active {
+  transform: scale(0.985);
+}
+
+.platform-card-selected {
+  border-color: hsl(var(--primary) / 0.85);
+  box-shadow:
+    0 0 0 1px hsl(var(--primary) / 0.6),
+    0 12px 28px hsl(var(--primary) / 0.22),
+    inset 0 1px 0 hsl(0 0% 100% / 0.06);
+}
+
+.native-cta {
+  background: linear-gradient(100deg, hsl(var(--primary)), hsl(34 100% 56%));
+  box-shadow:
+    0 10px 24px hsl(29 100% 40% / 0.36),
+    inset 0 1px 0 hsl(0 0% 100% / 0.2);
+  transition:
+    transform 220ms ease,
+    filter 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.native-cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 16px 30px hsl(29 100% 40% / 0.42),
+    inset 0 1px 0 hsl(0 0% 100% / 0.24);
+}
+
+.native-cta:active:not(:disabled) {
+  transform: translateY(1px) scale(0.992);
+}
+
+.page-reveal {
+  animation: page-reveal 420ms ease both;
+}
+
+.animate-rise-up {
+  animation: rise-up 0.65s ease both;
+}
+
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: hsl(220 70% 7% / 0.62);
+  animation: overlay-in 180ms ease both;
+}
+
+.transition-overlay-fade {
+  animation: fade-to-black 1s linear forwards;
+}
+
+@media (min-width: 640px) {
+  .glass-panel {
+    border-radius: 2rem;
+  }
+
+  .platform-card {
+    padding: 1.7rem 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .native-bg-orb--one,
+  .native-bg-orb--two,
+  .page-reveal,
+  .animate-rise-up,
+  .platform-card,
+  .transition-overlay,
+  .transition-overlay-fade {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+@keyframes page-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-to-black {
+  from {
+    opacity: 1;
+    background: hsl(220 70% 7% / 0.62);
+  }
+  to {
+    opacity: 1;
+    background: hsl(0 0% 0%);
+  }
+}
+
+@keyframes drift-orb {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 16px, 0) scale(1.05);
+  }
+}
+
 /**
  * Using the elevate system.
  * Automatic contrast adjustment.
