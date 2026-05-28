@@ -5,6 +5,7 @@ export default function Onboarding() {
     <LandingPage
       destinationUrl="https://app.impulsionalikes.com/impulsionar"
       mode="onboarding"
+      pageTitle="ImpulsionaLikes | Onboarding"
     />
   );
 }

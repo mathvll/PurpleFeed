@@ -1,0 +1,22 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "Impulsione sua presença No Digital!" [level=1] [ref=e7]
+        - paragraph [ref=e8]: Somos a escolha preferida dos clientes por nossa excelência, custo-benefício e Suporte.
+      - generic [ref=e9]:
+        - heading "Escolha a melhor opção" [level=2] [ref=e10]
+        - paragraph [ref=e11]: Encontre o serviço certo para você e comece agora.
+      - generic [ref=e12]:
+        - button "Instagram" [ref=e13] [cursor=pointer]:
+          - img [ref=e15]
+          - heading "Instagram" [level=3] [ref=e17]
+        - button "Tiktok" [ref=e18] [cursor=pointer]:
+          - img [ref=e20]
+          - heading "Tiktok" [level=3] [ref=e22]
+      - generic [ref=e23]:
+        - button "COMEÇAR AGORA" [disabled]
+        - paragraph [ref=e24]: Selecione uma rede para continuar.
+    - paragraph [ref=e26]: Serviços de alta qualidade e entrega rápida garantidos
