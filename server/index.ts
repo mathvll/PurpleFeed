@@ -73,12 +73,30 @@ app.use((req, res, next) => {
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  const port = parseInt(process.env.PORT || "5000", 10);
+  const preferredHost = process.env.HOST || "0.0.0.0";
+
+  const startServer = (host: string) => {
+    server.listen(
+      {
+        port,
+        host,
+        reusePort: host === "0.0.0.0",
+      },
+      () => {
+        log(`serving on ${host}:${port}`);
+      },
+    );
+  };
+
+  server.once("error", (error: NodeJS.ErrnoException) => {
+    if (error.code === "ENOTSUP" && preferredHost === "0.0.0.0") {
+      log("0.0.0.0 not supported in this environment, retrying on 127.0.0.1");
+      startServer("127.0.0.1");
+      return;
+    }
+    throw error;
   });
+
+  startServer(preferredHost);
 })();
