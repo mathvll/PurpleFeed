@@ -3,14 +3,11 @@ import { SiInstagram, SiTiktok } from "react-icons/si";
 import { ArrowRight, Check, LoaderCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { siteConfig } from "@/lib/site-config";
 
 const LOADING_DURATION_MS = 1500;
 const FADE_OUT_DURATION_MS = 1000;
 const FOLLOW_UP_MODAL_DELAY_MS = 10000;
-const WHATSAPP_PHONE_NUMBER = "5522992829808";
-const WHATSAPP_DISPLAY_PHONE = "+55 22 99282-9808";
-const WHATSAPP_MESSAGE =
-  "Olá, gostaria de saber mais sobre como funciona a Loja ImpulsionaLikes";
 const ENGAGEMENT_MIN_DURATION_MS = 10000;
 const ENGAGEMENT_MIN_INTERACTIONS = 3;
 const SESSION_STARTED_AT_KEY = "purplefeed_page_session_started_at";
@@ -52,18 +49,7 @@ interface LandingCopy {
 }
 
 const defaultCopy: LandingCopy = {
-  heroTitlePrefix: "Impulsione sua",
-  heroTitleHighlight: "presença digital",
-  heroSubtitle:
-    "Somos a escolha preferida dos clientes pela excelência, custo-benefício e suporte.",
-  sectionTitle: "Escolha a melhor opção",
-  sectionSubtitle: "Selecione a plataforma ideal para começar agora.",
-  ctaLabel: "Começar agora",
-  onboardingSelectionHint: "Selecione uma rede para continuar.",
-  footerText: "Serviços de alta qualidade e entrega rápida garantidos",
-  followUpTitle: "Opa, Eaí, deu tudo certo ?",
-  followUpBody:
-    "Caso precise de mais informações sobre como funciona, ou outra coisa, pode nos mandar mensagem clicando no botão abaixo",
+  ...siteConfig.landingCopy,
 };
 
 const platforms: Platform[] = [
@@ -168,8 +154,8 @@ function buildRedirectUrl(baseUrl: string, social?: Platform["id"]): string {
 }
 
 function buildWhatsAppUrl(): string {
-  return `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(
-    WHATSAPP_MESSAGE,
+  return `https://wa.me/${siteConfig.whatsappPhoneNumber}?text=${encodeURIComponent(
+    siteConfig.whatsappMessage,
   )}`;
 }
 
@@ -196,8 +182,8 @@ export default function LandingPage({
   const resolvedPageTitle =
     pageTitle ??
     (mode === "onboarding"
-      ? "ImpulsionaLikes | Onboarding"
-      : "ImpulsionaLikes | Página inicial");
+      ? siteConfig.pageTitles.onboarding
+      : siteConfig.pageTitles.root);
 
   const attemptEngagementConfirmation = () => {
     if (engagementSentRef.current || !engagementReadyRef.current) {
@@ -579,7 +565,7 @@ export default function LandingPage({
               target="_blank"
             >
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
-              <span>{WHATSAPP_DISPLAY_PHONE}</span>
+              <span>{siteConfig.whatsappDisplayPhone}</span>
             </a>
           </div>
         </div>

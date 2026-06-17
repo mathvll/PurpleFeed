@@ -1,11 +1,12 @@
 import LandingPage from "@/components/landing-page";
+import { siteConfig } from "@/lib/site-config";
 
 export default function Onboarding() {
   return (
     <LandingPage
-      destinationUrl="https://app.impulsionalikes.com/impulsionar"
+      destinationUrl={siteConfig.onboardingCtaUrl}
       mode="onboarding"
-      pageTitle="ImpulsionaLikes | Onboarding"
+      pageTitle={siteConfig.pageTitles.onboarding}
     />
   );
 }
