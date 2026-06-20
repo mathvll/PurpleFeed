@@ -112,12 +112,21 @@ prompt_value() {
   local default_value="${3:-}"
   local answer=""
 
-  if [[ -n "$default_value" ]]; then
-    read -r -p "$question [$default_value]: " answer || true
+  if [[ -t 0 && -t 1 ]]; then
+    if [[ -n "$default_value" ]]; then
+      read -r -e -i "$default_value" -p "$question: " answer || true
+    else
+      read -r -e -p "$question: " answer || true
+    fi
   else
-    read -r -p "$question: " answer || true
+    if [[ -n "$default_value" ]]; then
+      read -r -p "$question [$default_value]: " answer || true
+    else
+      read -r -p "$question: " answer || true
+    fi
   fi
 
+  answer="$(trim_whitespace "$answer")"
   if [[ -z "$answer" ]]; then
     answer="$default_value"
   fi
@@ -197,12 +206,31 @@ prompt_yes_no() {
 
 normalize_url() {
   local raw_value="$1"
+  raw_value="$(trim_whitespace "$raw_value")"
   raw_value="${raw_value%/}"
   if [[ "$raw_value" =~ ^https?:// ]]; then
     printf '%s' "$raw_value"
   else
     printf 'https://%s' "$raw_value"
   fi
+}
+
+trim_whitespace() {
+  local value="$1"
+  local extglob_state
+
+  extglob_state="$(shopt -p extglob 2>/dev/null || true)"
+  shopt -s extglob
+  value="${value##+([[:space:]])}"
+  value="${value%%+([[:space:]])}"
+
+  if [[ -n "$extglob_state" ]]; then
+    eval "$extglob_state"
+  else
+    shopt -u extglob
+  fi
+
+  printf '%s' "$value"
 }
 
 url_host() {
