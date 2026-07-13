@@ -37,8 +37,12 @@ function resolveCanonicalUrl() {
 }
 
 function getPageTitle(pathname: string): string {
-  if (pathname === "/onboarding") {
-    return siteConfig.pageTitles.onboarding;
+  if (pathname === "/finalizar") {
+    return siteConfig.pageTitles.checkout;
+  }
+
+  if (pathname === "/pagamento") {
+    return siteConfig.pageTitles.payment;
   }
 
   return siteConfig.pageTitles.root;

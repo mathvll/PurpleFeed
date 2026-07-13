@@ -8,9 +8,12 @@ interface ImportMetaEnv {
   readonly VITE_APP_URL?: string;
   readonly VITE_CTA_URL?: string;
   readonly VITE_ONBOARDING_URL?: string;
+  readonly VITE_PIX_COPY_PASTE?: string;
   readonly VITE_GA4_ID?: string;
   readonly VITE_GOOGLE_ADS_ID?: string;
   readonly VITE_HOME_PAGE_TITLE?: string;
+  readonly VITE_CHECKOUT_PAGE_TITLE?: string;
+  readonly VITE_PAYMENT_PAGE_TITLE?: string;
   readonly VITE_ONBOARDING_PAGE_TITLE?: string;
   readonly VITE_HERO_TITLE_PREFIX?: string;
   readonly VITE_HERO_TITLE_HIGHLIGHT?: string;

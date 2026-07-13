@@ -35,7 +35,7 @@ export const siteConfig = {
   siteName: readString(["VITE_SITE_NAME", "VITE_APP_NAME", "VITE_BRAND_NAME"], appName),
   siteDescription: readString(
     ["VITE_SITE_DESCRIPTION"],
-    "Landing page configurável para campanhas, captação e redirecionamento.",
+    "Loja digital configurável para pacotes de engajamento no Instagram.",
   ),
   siteUrl: stripTrailingSlash(readString(["VITE_SITE_URL"], "")),
   appUrl: stripTrailingSlash(
@@ -48,6 +48,10 @@ export const siteConfig = {
   onboardingCtaUrl: readString(
     ["VITE_ONBOARDING_CTA_URL", "VITE_ONBOARDING_URL"],
     "https://app.impulsionalikes.com/impulsionar",
+  ),
+  pixCopyPaste: readString(
+    ["VITE_PIX_COPY_PASTE"],
+    "CHAVE_PIX_AQUI",
   ),
   ga4MeasurementId: readOptionalString(["VITE_GA4_MEASUREMENT_ID", "VITE_GA4_ID"]),
   googleAdsMeasurementId: readOptionalString([
@@ -69,7 +73,15 @@ export const siteConfig = {
   pageTitles: {
     root: readString(
       ["VITE_HOME_PAGE_TITLE"],
-      `${appName} | Página inicial`,
+      `${appName} | Loja`,
+    ),
+    checkout: readString(
+      ["VITE_CHECKOUT_PAGE_TITLE"],
+      `${appName} | Finalizar pedido`,
+    ),
+    payment: readString(
+      ["VITE_PAYMENT_PAGE_TITLE"],
+      `${appName} | Pagamento PIX`,
     ),
     onboarding: readString(
       ["VITE_ONBOARDING_PAGE_TITLE"],
