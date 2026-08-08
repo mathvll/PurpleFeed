@@ -13,7 +13,24 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react";
-import { SiInstagram, SiTiktok } from "react-icons/si";
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    </svg>
+  );
+}
+
+function TiktokIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+    </svg>
+  );
+}
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -546,7 +563,7 @@ export default function Home() {
               onClick={() => scrollToCategory("reels")}
               className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-white/5 px-2 py-3 text-white transition hover:bg-white/10"
             >
-              <SiInstagram className="h-5 w-5" />
+              <InstagramIcon className="h-5 w-5" />
               <span className="text-[11px] font-semibold">Instagram</span>
             </button>
             <button
@@ -554,7 +571,7 @@ export default function Home() {
               onClick={() => scrollToCategory("followers")}
               className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-white/5 px-2 py-3 text-white transition hover:bg-white/10"
             >
-              <SiTiktok className="h-5 w-5" />
+              <TiktokIcon className="h-5 w-5" />
               <span className="text-[11px] font-semibold">TikTok</span>
             </button>
             <button
@@ -612,7 +629,7 @@ export default function Home() {
                     className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10">
-                      <SiInstagram className="h-5 w-5" />
+                      <InstagramIcon className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="text-sm font-bold text-white">Instagram</p>
@@ -625,7 +642,7 @@ export default function Home() {
                     className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10">
-                      <SiTiktok className="h-5 w-5" />
+                      <TiktokIcon className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="text-sm font-bold text-white">TikTok</p>

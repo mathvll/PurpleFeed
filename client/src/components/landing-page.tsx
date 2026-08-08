@@ -1,9 +1,26 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { SiInstagram, SiTiktok } from "react-icons/si";
 import { ArrowRight, Check, LoaderCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { siteConfig } from "@/lib/site-config";
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    </svg>
+  );
+}
+
+function TiktokIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+    </svg>
+  );
+}
 
 const LOADING_DURATION_MS = 1500;
 const FADE_OUT_DURATION_MS = 1000;
@@ -56,14 +73,14 @@ const platforms: Platform[] = [
   {
     id: "instagram",
     name: "Instagram",
-    icon: SiInstagram,
+    icon: InstagramIcon,
     color: "from-[#4B00A8] via-[#7A12E0] to-[#B72BFF]",
     glowColor: "shadow-[0_0_48px_rgba(183,43,255,0.34)]",
   },
   {
     id: "tiktok",
-    name: "Tiktok",
-    icon: SiTiktok,
+    name: "TikTok",
+    icon: TiktokIcon,
     color: "from-[#13003D] via-[#25005F] to-[#4B00A8]",
     glowColor: "shadow-[0_0_48px_rgba(37,0,95,0.46)]",
   },

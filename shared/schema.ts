@@ -1,92 +1,70 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, integer } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const posts = pgTable("posts", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  platform: varchar("platform", { length: 20 }).notNull(), // 'tiktok' or 'instagram'
-  imageUrl: text("image_url"),
-  author: text("author").notNull(),
-  authorAvatar: text("author_avatar"),
-  likes: integer("likes").notNull().default(0),
-  commentCount: integer("comment_count").notNull().default(0),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+export const postSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  content: z.string(),
+  platform: z.enum(["tiktok", "instagram"]),
+  imageUrl: z.string().optional(),
+  author: z.string(),
+  authorAvatar: z.string().optional(),
+  likes: z.number().default(0),
+  commentCount: z.number().default(0),
+  createdAt: z.date(),
 });
 
-export const comments = pgTable("comments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  postId: varchar("post_id").notNull(),
-  author: text("author").notNull(),
-  authorAvatar: text("author_avatar"),
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-export const likes = pgTable("likes", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  postId: varchar("post_id").notNull(),
-  userId: text("user_id").notNull(), // Simple user identifier for now
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-// Insert schemas
-export const insertPostSchema = createInsertSchema(posts).omit({
+export const insertPostSchema = postSchema.omit({
   id: true,
   likes: true,
   commentCount: true,
   createdAt: true,
 });
 
-export const insertCommentSchema = createInsertSchema(comments).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertLikeSchema = createInsertSchema(likes).omit({
-  id: true,
-  createdAt: true,
-});
-
-// Types
+export type Post = z.infer<typeof postSchema>;
 export type InsertPost = z.infer<typeof insertPostSchema>;
-export type Post = typeof posts.$inferSelect;
 
-export type InsertComment = z.infer<typeof insertCommentSchema>;
-export type Comment = typeof comments.$inferSelect;
-
-export type InsertLike = z.infer<typeof insertLikeSchema>;
-export type Like = typeof likes.$inferSelect;
-
-// Keep existing user schema for compatibility
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const commentSchema = z.object({
+  id: z.string(),
+  postId: z.string(),
+  author: z.string(),
+  authorAvatar: z.string().optional(),
+  content: z.string(),
+  createdAt: z.date(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-
-// Tracking table for GCLID
-export const tracking = pgTable("tracking", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  gclid: text("gclid").notNull(),
-  ipAddress: text("ip_address").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-export const insertTrackingSchema = createInsertSchema(tracking).omit({
+export const insertCommentSchema = commentSchema.omit({
   id: true,
   createdAt: true,
 });
 
+export type Comment = z.infer<typeof commentSchema>;
+export type InsertComment = z.infer<typeof insertCommentSchema>;
+
+export const userSchema = z.object({
+  id: z.string(),
+  username: z.string(),
+  password: z.string(),
+});
+
+export const insertUserSchema = userSchema.omit({
+  id: true,
+});
+
+export type User = z.infer<typeof userSchema>;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+
+export const trackingSchema = z.object({
+  id: z.string(),
+  gclid: z.string(),
+  ipAddress: z.string(),
+  createdAt: z.date(),
+});
+
+export const insertTrackingSchema = trackingSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Tracking = z.infer<typeof trackingSchema>;
 export type InsertTracking = z.infer<typeof insertTrackingSchema>;
-export type Tracking = typeof tracking.$inferSelect;
+
