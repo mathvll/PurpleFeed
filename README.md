@@ -8,7 +8,38 @@ O projeto foi pensado para ser publicado por outras pessoas com pouca fricção:
 - GA4 e Google Ads podem ser ligados por `.env`
 - WhatsApp, textos da hero e labels da interface são configuráveis
 - O app roda em modo local e em produção com o mesmo código
-- O script `setup.sh` gera os arquivos de ambiente e os templates de `systemd` e `nginx`
+- O script `docs/scripts/setup.sh` gera os arquivos de ambiente e os templates de `systemd` e `nginx`
+
+---
+
+## Estrutura do Repositório
+
+O projeto possui uma estrutura limpa e modularizada na raiz, contendo exatamente **7 itens visíveis**:
+
+```text
+PurpleFeed/
+├── client/          # Aplicação frontend React + Vite + Tailwind CSS
+├── config/          # Central de arquivos de configuração do projeto
+├── docs/            # Documentação técnica, changelog e scripts de automação/setup
+├── server/          # Servidor Node.js / Express e rotas de backend
+├── shared/          # Esquemas compartilhados, validação de env (Zod) e utilitários
+├── package.json     # Manifest do projeto e scripts de execução
+└── README.md        # Documentação principal
+```
+
+### Arquivos de Configuração (`config/`)
+
+Para manter a raiz organizada, todas as configurações de ferramentas e compiladores foram centralizadas no diretório `config/`:
+
+- `config/vite.config.ts`: Configuração do bundler Vite e plugins React.
+- `config/tsconfig.json`: Configuração do compilador TypeScript.
+- `config/tailwind.config.ts`: Tema e plugins do Tailwind CSS.
+- `config/postcss.config.js`: Processamento PostCSS e Autoprefixer.
+- `config/drizzle.config.ts`: Configuração do ORM Drizzle e migrações.
+- `config/components.json`: Configuração do Shadcn UI.
+- `config/ecosystem.config.cjs`: Configuração do PM2 para produção.
+
+---
 
 ## O que o projeto faz
 
@@ -17,6 +48,8 @@ O projeto foi pensado para ser publicado por outras pessoas com pouca fricção:
 - Pode abrir o fluxo em aba nova no onboarding
 - Mostra um modal de acompanhamento no onboarding após a navegação
 - Registra eventos de engajamento no `gtag` quando o GA4 está configurado
+
+---
 
 ## Tecnologias
 
@@ -27,16 +60,9 @@ O projeto foi pensado para ser publicado por outras pessoas com pouca fricção:
 - Tailwind CSS
 - Wouter
 - Shadcn UI
+- Zod (Validação de variáveis de ambiente em `shared/env.ts`)
 
-## Estrutura Principal
-
-- `client/src/components/landing-page.tsx`: landing principal e fluxo de CTA
-- `client/src/components/site-integrations.tsx`: integração de metadados, canonical e analytics
-- `client/src/lib/site-config.ts`: leitura de configuração pública via `import.meta.env`
-- `server/index.ts`: servidor Express e porta de execução
-- `server/vite.ts`: modo dev e serving do build estático
-- `setup.sh`: setup guiado para local, build e deploy
-- `.env.example`: exemplo completo das variáveis suportadas
+---
 
 ## Requisitos
 
@@ -45,15 +71,17 @@ O projeto foi pensado para ser publicado por outras pessoas com pouca fricção:
 - Para deploy em produção com serviço: Linux com `systemd`
 - Para reverse proxy: `nginx`
 
+---
+
 ## Inicialização Rápida
 
-1. Instale as dependências.
+1. Instale as dependências:
 
 ```bash
 npm ci
 ```
 
-2. Crie seu arquivo `.env`.
+2. Crie seu arquivo `.env`:
 
 ```bash
 cp .env.example .env
@@ -61,18 +89,20 @@ cp .env.example .env
 
 3. Ajuste os valores do seu domínio, app alvo, GA4, WhatsApp e textos.
 
-4. Rode em desenvolvimento.
+4. Rode em desenvolvimento:
 
 ```bash
 npm run dev
 ```
+
+---
 
 ## Setup Guiado
 
 Se quiser um fluxo mais completo, use:
 
 ```bash
-./setup.sh
+./docs/scripts/setup.sh
 ```
 
 O script pergunta:
@@ -95,7 +125,11 @@ Ele gera:
 - `deploy/generated/nginx/*.conf`
 - `deploy/generated/setup-report.txt`
 
+---
+
 ## Variáveis de Ambiente
+
+Validadas e tipadas centralizadamente via `shared/env.ts`.
 
 ### Domínio e rotas
 
@@ -139,6 +173,8 @@ Ele gera:
 - `VITE_WHATSAPP_DISPLAY_PHONE`
 - `VITE_WHATSAPP_MESSAGE`
 
+---
+
 ## Deploy Local
 
 Fluxo recomendado:
@@ -150,7 +186,7 @@ npm run build
 npm run start
 ```
 
-Se estiver testando a exposição pública via proxy local, o servidor sobe na porta indicada por `PORT` e o `server/vite.ts` serve o build estático em produção.
+---
 
 ## Deploy em Produção
 
@@ -160,44 +196,10 @@ Pontos importantes:
 
 - `server/index.ts` usa `PORT` e `HOST`
 - `server/vite.ts` serve o build de `dist/public` em modo produção
-- `setup.sh` gera o unit do `systemd` com `WorkingDirectory` apontando para a raiz do projeto
-- `setup.sh` gera o `nginx` com `proxy_pass` para `HOST:PORT`
+- `docs/scripts/setup.sh` gera o unit do `systemd` com `WorkingDirectory` apontando para a raiz do projeto
+- `docs/scripts/setup.sh` gera o `nginx` com `proxy_pass` para `HOST:PORT`
 
-Fluxo típico:
-
-1. Instalar dependências
-2. Gerar `.env.production`
-3. Rodar `npm run build`
-4. Instalar o unit do `systemd`
-5. Instalar o conf do `nginx`
-6. Validar `nginx -t`
-7. Reiniciar/recarregar os serviços
-
-## Internal, External ou Ambos
-
-O setup aceita três modos de publicação:
-
-- `internal only`: a landing aponta para um domínio interno
-- `external only`: a landing aponta para um domínio público
-- `internal + external`: gera os dois alvos e permite ajustar cada URL separadamente
-
-Isso é útil quando o mesmo código precisa ser usado em ambientes diferentes sem mudar o projeto.
-
-## Verificação
-
-Antes de subir em produção, confira:
-
-- Se `VITE_SITE_URL` bate com o domínio final
-- Se `VITE_APP_URL`, `VITE_CTA_URL` e `VITE_ONBOARDING_URL` apontam para o destino correto
-- Se o `GA4` está preenchido apenas quando for usar analytics
-- Se o `nginx` está fazendo proxy para a porta correta
-- Se o `systemd` usa o usuário/grupo corretos
-
-## Observações
-
-- O projeto já preserva `gclid` ao redirecionar para o app destino
-- O tracking de página só acontece quando `GA4` ou Google Ads estão configurados
-- Os textos da landing podem ser alterados sem tocar em código, via `.env`
+---
 
 ## Licença
 

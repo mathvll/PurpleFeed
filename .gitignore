@@ -8,4 +8,7 @@ vite.config.ts.*
 .env.local
 .env.production
 .env.production.local
+.version.local
+.playwright-mcp/
 deploy/generated/
+
