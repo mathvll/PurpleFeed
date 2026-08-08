@@ -24,7 +24,7 @@ function resolveEnvPath(baseDir: string) {
 export function loadProjectEnv(baseDir: string) {
   dotenv.config({
     path: resolveEnvPath(baseDir),
-    override: true,
+    override: false,
   });
 }
 

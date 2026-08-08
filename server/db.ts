@@ -2,7 +2,7 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import * as schema from "@shared/schema";
-import { loadProjectEnv } from "../env";
+import { loadProjectEnv } from "./env";
 
 neonConfig.webSocketConstructor = ws;
 loadProjectEnv(process.cwd());
