@@ -1,5 +1,5 @@
 import { defineConfig } from "drizzle-kit";
-import { loadProjectEnv } from "./env";
+import { loadProjectEnv } from "../server/env";
 
 loadProjectEnv(process.cwd());
 

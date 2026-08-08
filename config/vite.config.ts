@@ -1,12 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from "url";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import { getAppRoot, loadProjectEnv } from "./env";
+import { loadProjectEnv } from "../server/env";
 
-loadProjectEnv(process.cwd());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const appRoot = path.resolve(__dirname, "..");
 
-const appRoot = getAppRoot(process.cwd());
+loadProjectEnv(appRoot);
 
 export default defineConfig({
   plugins: [
@@ -28,8 +31,11 @@ export default defineConfig({
     alias: {
       "@": path.resolve(appRoot, "client", "src"),
       "@shared": path.resolve(appRoot, "shared"),
-      "@assets": path.resolve(appRoot, "attached_assets"),
+      "@assets": path.resolve(appRoot, "docs", "assets"),
     },
+  },
+  css: {
+    postcss: path.resolve(__dirname, "postcss.config.js"),
   },
   root: path.resolve(appRoot, "client"),
   build: {
@@ -43,3 +49,4 @@ export default defineConfig({
     },
   },
 });
+
