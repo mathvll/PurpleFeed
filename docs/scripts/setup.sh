@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$SCRIPT_DIR"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DEPLOY_ROOT="$PROJECT_ROOT/deploy"
 GENERATED_ROOT="$DEPLOY_ROOT/generated"
 RUNTIME_DIR="$GENERATED_ROOT/runtime"
