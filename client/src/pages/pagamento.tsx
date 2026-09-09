@@ -1,49 +1,24 @@
-import { Link } from "wouter";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  ClipboardCopy,
-  QrCode,
-  Sparkles,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+import { useLocation } from "wouter";
+import { ArrowLeft, Check, ClipboardCopy, ExternalLink, QrCode, ShieldCheck, TriangleAlert } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  calculatePackPrice,
-  formatCurrency,
-  getCategoryById,
-  getPackByQuantity,
-} from "@/lib/smm-catalog";
+import { calculatePackPrice, formatCurrency, getCategoryById, getPackByQuantity } from "@/lib/smm-catalog";
 import { readCheckoutDraft } from "@/lib/checkout-draft";
 import { siteConfig } from "@/lib/site-config";
-import { toast } from "@/hooks/use-toast";
 
 function resolvePaymentState() {
   const draft = readCheckoutDraft();
   const searchParams = new URLSearchParams(window.location.search);
   const category = getCategoryById(draft?.categoryId ?? searchParams.get("category") ?? undefined);
   const pack = getPackByQuantity(category, draft?.quantity ?? searchParams.get("quantity") ?? undefined);
-  const totalPrice = calculatePackPrice(category, pack.quantity);
 
-  return {
-    draft,
-    category,
-    pack,
-    totalPrice,
-  };
+  return { draft, category, pack, totalPrice: calculatePackPrice(category, pack.quantity) };
 }
 
-function getQrCodeUrl(payload: string) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(payload)}`;
+function isConfiguredPixCode(value: string) {
+  const normalized = value.trim();
+  return normalized.length >= 20 && !normalized.includes("CHAVE_PIX_AQUI");
 }
 
 async function copyPixCode(value: string) {
@@ -55,7 +30,7 @@ async function copyPixCode(value: string) {
   const helper = document.createElement("textarea");
   helper.value = value;
   helper.setAttribute("readonly", "true");
-  helper.style.position = "absolute";
+  helper.style.position = "fixed";
   helper.style.left = "-9999px";
   document.body.appendChild(helper);
   helper.select();
@@ -63,179 +38,141 @@ async function copyPixCode(value: string) {
   document.body.removeChild(helper);
 }
 
+function trackPaymentEvent(eventName: "view_pix_payment" | "copy_pix_code") {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName);
+  }
+}
+
 export default function PagamentoPage() {
+  const [, setLocation] = useLocation();
   const paymentState = resolvePaymentState();
-  const pixCode = siteConfig.pixCopyPaste;
-  const qrCodeUrl = getQrCodeUrl(pixCode);
+  const pixCode = siteConfig.pixCopyPaste.trim();
+  const pixIsConfigured = isConfiguredPixCode(pixCode);
+  const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const supportUrl = `https://wa.me/${siteConfig.whatsappPhoneNumber}?text=${encodeURIComponent("Olá, preciso de ajuda com meu pagamento na curtidas.online.")}`;
+
+  useEffect(() => {
+    trackPaymentEvent("view_pix_payment");
+  }, []);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timeout = window.setTimeout(() => setCopied(false), 2800);
+    return () => window.clearTimeout(timeout);
+  }, [copied]);
+
+  const handleBack = () => {
+    if (document.referrer.startsWith(window.location.origin)) {
+      window.history.back();
+      return;
+    }
+
+    setLocation("/");
+  };
 
   const handleCopyPix = async () => {
+    if (!pixIsConfigured) return;
+
     try {
       await copyPixCode(pixCode);
-      toast({
-        title: "PIX copia e cola foi copiado",
-      });
+      setCopyError(false);
+      setCopied(true);
+      trackPaymentEvent("copy_pix_code");
     } catch (error) {
       console.error("Failed to copy PIX code:", error);
-      toast({
-        title: "Não foi possível copiar o PIX",
-        description: "Tente novamente ou copie manualmente.",
-      });
+      setCopyError(true);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute left-[-10rem] top-[-8rem] h-72 w-72 rounded-full bg-cyan-500/15 blur-3xl" />
-        <div className="absolute right-[-8rem] top-[12rem] h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
-      </div>
+    <div className="store-shell">
+      <main className="payment-main">
+        <header className="payment-header">
+          <button type="button" onClick={handleBack} className="store-icon-button" aria-label="Voltar para a loja">
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <span>Pagamento PIX</span>
+          <span className="payment-header__secure"><ShieldCheck className="h-4 w-4" /> Seguro</span>
+        </header>
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 py-6 sm:px-6 lg:px-8">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <Button asChild variant="outline" className="rounded-full border-white/10 bg-white/5 text-white hover:bg-white/10">
-            <Link
-              href={`/finalizar?category=${paymentState.category.id}&quantity=${paymentState.pack.quantity}`}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Voltar
-            </Link>
-          </Button>
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-white/40">
-            Pagamento PIX
-          </p>
-        </div>
+        <section className="payment-layout" aria-labelledby="payment-title">
+          <div className="payment-action-panel">
+            <p className="store-eyebrow">Último passo</p>
+            <h1 id="payment-title">Finalize em segundos.</h1>
+            <p className="payment-action-panel__intro">Copie o código PIX, abra o app do seu banco e confirme o pagamento.</p>
 
-        <section className="grid flex-1 gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <Card className="border-white/10 bg-white/[0.05] text-white shadow-[0_40px_120px_rgba(0,0,0,0.36)] backdrop-blur-xl">
-            <CardHeader className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-[0.36em] text-cyan-300/80">
-                Confirmação
-              </p>
-              <CardTitle className="text-3xl font-black tracking-tight text-white">
-                Pague com PIX
-              </CardTitle>
-              <CardDescription className="max-w-xl text-sm leading-6 text-white/60">
-                Escaneie o QR Code ou copie e cole o código abaixo para concluir
-                sua compra.
-              </CardDescription>
-            </CardHeader>
+            <div className="payment-total">
+              <span>Total do pedido</span>
+              <strong>{formatCurrency(paymentState.totalPrice)}</strong>
+            </div>
 
-            <CardContent className="space-y-5">
-              <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
-                <div className="flex items-start justify-between gap-4">
+            {!pixIsConfigured ? (
+              <div className="payment-alert" role="alert">
+                <TriangleAlert className="h-5 w-5 shrink-0" />
+                <div>
+                  <strong>Pagamento indisponível no momento.</strong>
+                  <p>Fale com o suporte para receber as instruções de pagamento.</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button type="button" onClick={handleCopyPix} className="payment-copy-button" aria-describedby="payment-copy-status">
+                  {copied ? <Check className="h-5 w-5" /> : <ClipboardCopy className="h-5 w-5" />}
+                  <span>{copied ? "Código PIX copiado" : "Copiar código PIX"}</span>
+                  <strong>{formatCurrency(paymentState.totalPrice)}</strong>
+                </button>
+                <p id="payment-copy-status" className="payment-status" aria-live="polite">
+                  {copied && "Código copiado. Abra o aplicativo do seu banco para pagar."}
+                  {copyError && "Não foi possível copiar. Use o código completo abaixo."}
+                </p>
+
+                <details className="payment-code-details">
+                  <summary>Ver código PIX copia e cola</summary>
+                  <code>{pixCode}</code>
+                </details>
+
+                <section className="payment-qr" aria-labelledby="pix-qr-title">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/45">
-                      Pedido
-                    </p>
-                    <h2 className="mt-2 text-2xl font-black text-white">
-                      {paymentState.pack.label}
-                    </h2>
-                    <p className="mt-1 text-sm text-white/60">
-                      {paymentState.category.title}
-                    </p>
+                    <QrCode className="h-5 w-5 text-[var(--store-accent-warm)]" />
+                    <h2 id="pix-qr-title">Prefere escanear?</h2>
+                    <p>Aponte a câmera do banco para o QR Code.</p>
                   </div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
-                    <Sparkles className="h-5 w-5 text-cyan-200" />
+                  <div className="payment-qr__code">
+                    <QRCodeSVG value={pixCode} size={208} marginSize={2} level="M" title="QR Code PIX" />
                   </div>
-                </div>
+                </section>
+              </>
+            )}
+          </div>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/45">
-                      Nome
-                    </p>
-                    <p className="mt-2 text-sm font-bold text-white">
-                      {paymentState.draft?.customerName || "Não informado"}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/45">
-                      Email
-                    </p>
-                    <p className="mt-2 text-sm font-bold text-white">
-                      {paymentState.draft?.customerEmail || "Não informado"}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/45">
-                      Total
-                    </p>
-                    <p className="mt-2 text-sm font-black text-white">
-                      {formatCurrency(paymentState.totalPrice)}
-                    </p>
-                  </div>
+          <aside className="payment-order" aria-label="Resumo do pedido">
+            <div className="payment-order__heading">
+              <p className="store-eyebrow">Seu pedido</p>
+              <button type="button" onClick={handleBack}>Editar</button>
+            </div>
+            <h2>{paymentState.pack.label}</h2>
+            <p>{paymentState.category.title}</p>
+            <dl>
+              {paymentState.draft?.target && (
+                <div>
+                  <dt>Perfil ou conteúdo</dt>
+                  <dd title={paymentState.draft.target}>{paymentState.draft.target}</dd>
                 </div>
-              </div>
-
-              <div className="rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-5 text-sm leading-6 text-cyan-50">
-                Assim que o PIX for confirmado, seu pedido segue para
-                atendimento.
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-white/10 bg-white/[0.045] text-white shadow-[0_40px_120px_rgba(0,0,0,0.3)] backdrop-blur-xl">
-            <CardHeader className="items-center text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
-                <QrCode className="h-6 w-6 text-cyan-200" />
-              </div>
-              <CardTitle className="text-2xl font-black text-white">
-                QR Code PIX
-              </CardTitle>
-              <CardDescription className="text-sm leading-6 text-white/60">
-                Abra o app do banco, escolha PIX e escaneie a imagem.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-5">
-              <div className="flex justify-center">
-                <div className="rounded-[1.75rem] border border-white/10 bg-white p-4 shadow-[0_30px_80px_rgba(0,0,0,0.28)]">
-                  <img
-                    alt="QR Code PIX"
-                    className="h-[280px] w-[280px] rounded-[1rem] bg-white object-contain"
-                    src={qrCodeUrl}
-                  />
+              )}
+              {paymentState.draft?.customerEmail && (
+                <div>
+                  <dt>E-mail</dt>
+                  <dd title={paymentState.draft.customerEmail}>{paymentState.draft.customerEmail}</dd>
                 </div>
-              </div>
-
-              <div className="grid gap-3 text-sm leading-6 text-white/60">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-                  <p>Abra o app do banco e entre em PIX.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-                  <p>Use o QR Code ou o código copia e cola abaixo.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-                  <p>Confirme o pagamento e aguarde a finalização.</p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Label htmlFor="pix-code" className="text-sm font-semibold text-white/80">
-                  PIX copia e cola
-                </Label>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Textarea
-                    id="pix-code"
-                    readOnly
-                    value={pixCode}
-                    className="min-h-[110px] flex-1 border-white/10 bg-black/20 text-sm leading-6 text-white placeholder:text-white/30 focus-visible:ring-cyan-300"
-                  />
-                  <Button
-                    type="button"
-                    onClick={handleCopyPix}
-                    className="h-12 rounded-full px-5 font-bold sm:self-start"
-                  >
-                    <ClipboardCopy className="h-4 w-4" />
-                    Copiar
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              )}
+            </dl>
+            <div className="payment-order__notice">Após o pagamento, seu pedido segue para atendimento.</div>
+            <a href={supportUrl} target="_blank" rel="noreferrer" className="payment-support-link">
+              Precisa de ajuda? Fale com o suporte <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </aside>
         </section>
       </main>
     </div>

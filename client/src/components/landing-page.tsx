@@ -3,6 +3,7 @@ import { ArrowRight, Check, LoaderCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { siteConfig } from "@/lib/site-config";
+import { BrandMark } from "@/components/brand-mark";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -441,9 +442,10 @@ export default function LandingPage({
       <div className="native-bg-orb native-bg-orb--one" aria-hidden="true" />
       <div className="native-bg-orb native-bg-orb--two" aria-hidden="true" />
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
+        <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-4 pb-24 pt-8 sm:px-6 sm:pb-10 sm:pt-10 md:pb-10">
         <section className="glass-panel animate-rise-up mb-6 rounded-3xl px-5 py-6 sm:px-8 sm:py-8">
           <div className="text-center">
+            <BrandMark className="mb-5 justify-center" />
             <h1
               className="hero-title font-[family-name:var(--font-heading)]"
               data-testid="text-hero-title"

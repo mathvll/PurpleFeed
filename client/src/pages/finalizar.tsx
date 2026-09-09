@@ -62,7 +62,7 @@ export default function FinalizarPage() {
         <div className="absolute right-[-8rem] top-[12rem] h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       </div>
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-6 pb-24 sm:px-6 md:pb-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between gap-4">
           <Button asChild variant="outline" className="rounded-full border-white/10 bg-white/5 text-white hover:bg-white/10">
             <Link href="/">

@@ -5,6 +5,7 @@ export interface CheckoutDraft {
   quantity: number;
   customerName: string;
   customerEmail: string;
+  target?: string;
 }
 
 const STORAGE_KEY = "smm_checkout_draft_v1";
@@ -39,7 +40,8 @@ export function readCheckoutDraft(): CheckoutDraft | null {
       typeof parsedDraft.categoryId !== "string" ||
       typeof parsedDraft.quantity !== "number" ||
       typeof parsedDraft.customerName !== "string" ||
-      typeof parsedDraft.customerEmail !== "string"
+      typeof parsedDraft.customerEmail !== "string" ||
+      (typeof parsedDraft.target !== "undefined" && typeof parsedDraft.target !== "string")
     ) {
       return null;
     }
