@@ -28,30 +28,26 @@ function stripTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-const appName = readString(["VITE_APP_NAME", "VITE_BRAND_NAME"], "curtidas.online");
+const appName = readString(["VITE_APP_NAME", "VITE_BRAND_NAME"], "ImpulsionaLikes");
 
 export const siteConfig = {
   appName,
   siteName: readString(["VITE_SITE_NAME", "VITE_APP_NAME", "VITE_BRAND_NAME"], appName),
   siteDescription: readString(
     ["VITE_SITE_DESCRIPTION"],
-    "Curtidas, seguidores e visualizações para fortalecer sua presença no Instagram.",
+    "Landing page configurável para campanhas, captação e redirecionamento.",
   ),
   siteUrl: stripTrailingSlash(readString(["VITE_SITE_URL"], "")),
   appUrl: stripTrailingSlash(
-    readString(["VITE_APP_URL"], "https://curtidas.online"),
+    readString(["VITE_APP_URL"], "https://app.impulsionalikes.com"),
   ),
   homeCtaUrl: readString(
     ["VITE_HOME_CTA_URL", "VITE_CTA_URL"],
-    "https://curtidas.online/",
+    "https://app.impulsionalikes.com/",
   ),
   onboardingCtaUrl: readString(
     ["VITE_ONBOARDING_CTA_URL", "VITE_ONBOARDING_URL"],
-    "https://curtidas.online/",
-  ),
-  pixCopyPaste: readString(
-    ["VITE_PIX_COPY_PASTE"],
-    "CHAVE_PIX_AQUI",
+    "https://app.impulsionalikes.com/impulsionar",
   ),
   ga4MeasurementId: readOptionalString(["VITE_GA4_MEASUREMENT_ID", "VITE_GA4_ID"]),
   googleAdsMeasurementId: readOptionalString([
@@ -68,20 +64,12 @@ export const siteConfig = {
   ),
   whatsappMessage: readString(
     ["VITE_WHATSAPP_MESSAGE"],
-    "Olá, gostaria de saber mais sobre os pacotes da curtidas.online",
+    "Olá, gostaria de saber mais sobre como funciona a Loja ImpulsionaLikes",
   ),
   pageTitles: {
     root: readString(
       ["VITE_HOME_PAGE_TITLE"],
-      `${appName} | Loja de curtidas`,
-    ),
-    checkout: readString(
-      ["VITE_CHECKOUT_PAGE_TITLE"],
-      `${appName} | Finalizar pedido`,
-    ),
-    payment: readString(
-      ["VITE_PAYMENT_PAGE_TITLE"],
-      `${appName} | Pagamento PIX`,
+      `${appName} | Página inicial`,
     ),
     onboarding: readString(
       ["VITE_ONBOARDING_PAGE_TITLE"],
@@ -89,22 +77,22 @@ export const siteConfig = {
     ),
   },
   landingCopy: {
-    heroTitlePrefix: readString(["VITE_HERO_TITLE_PREFIX"], "Aumente suas"),
+    heroTitlePrefix: readString(["VITE_HERO_TITLE_PREFIX"], "Impulsione sua"),
     heroTitleHighlight: readString(
       ["VITE_HERO_TITLE_HIGHLIGHT"],
-      "curtidas no Instagram",
+      "presença digital",
     ),
     heroSubtitle: readString(
       ["VITE_HERO_SUBTITLE"],
-      "Pacotes rápidos de curtidas, seguidores e visualizações para deixar seu perfil mais forte.",
+      "Somos a escolha preferida dos clientes pela excelência, custo-benefício e suporte.",
     ),
     sectionTitle: readString(
       ["VITE_SECTION_TITLE"],
-      "Escolha seu pacote",
+      "Escolha a melhor opção",
     ),
     sectionSubtitle: readString(
       ["VITE_SECTION_SUBTITLE"],
-      "Encontre a opção ideal e comece a aumentar sua presença agora.",
+      "Selecione a plataforma ideal para começar agora.",
     ),
     ctaLabel: readString(["VITE_CTA_LABEL"], "Começar agora"),
     onboardingSelectionHint: readString(
@@ -113,15 +101,15 @@ export const siteConfig = {
     ),
     footerText: readString(
       ["VITE_FOOTER_TEXT"],
-      "Mais curtidas, mais presença, mais confiança.",
+      "Serviços de alta qualidade e entrega rápida garantidos",
     ),
     followUpTitle: readString(
       ["VITE_FOLLOW_UP_TITLE"],
-      "Deu tudo certo com seu pedido?",
+      "Opa, Eaí, deu tudo certo ?",
     ),
     followUpBody: readString(
       ["VITE_FOLLOW_UP_BODY"],
-      "Se precisar de ajuda com seu pacote ou pedido, fale com nosso atendimento.",
+      "Caso precise de mais informações sobre como funciona, ou outra coisa, pode nos mandar mensagem clicando no botão abaixo",
     ),
   },
 } as const;

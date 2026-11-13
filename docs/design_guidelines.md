@@ -1,8 +1,8 @@
-# Design Guidelines: Landing Page curtidas.online
+# Design Guidelines: Landing Page Impulsiona Digital
 
 ## Design Approach
 
-**Landing Page Strategy**: Clean, conversion-focused design for curtidas.online. A dark premium base with Instagram-inspired gradients, heart/like cues and compact offer cards keeps the store recognizable and fast to scan.
+**Landing Page Strategy**: Clean, conversion-focused design inspired by the provided mockup. Dark blue background with bold orange CTA creating high contrast and clear call-to-action. Platform selection cards are the primary interaction elements, designed for immediate visual recognition and easy clicking.
 
 ## Typography System
 
@@ -20,12 +20,12 @@
 ## Color Palette
 
 **Background**:
-- Main: Deep navy blue (#050816)
-- Card background: Slightly lighter navy with translucent surfaces
+- Main: Deep navy blue (#0a1628 / 220 70% 10%)
+- Card background: Slightly lighter navy (#1a2640 / 220 60% 15%)
 
 **Accent Colors**:
-- Primary CTA: Instagram pink and purple gradient (#e1306c / #833ab4)
-- Secondary accent: Warm orange/yellow gradient (#f77737 / #f9ce34)
+- Primary CTA: Vibrant orange (#ff9800 / 36 100% 50%)
+- Gradient highlight: Cyan accent for "No Digital!" text (#00e5ff / 189 100% 50%)
 
 **Text**:
 - Primary: White (#ffffff)
@@ -67,7 +67,7 @@
   - Platform name (centered below icon)
   - Dark blue background with subtle border
   - Hover effect: Brightness increase and subtle scale
-- Click navigates to https://curtidas.online/
+  - Click redirects to https://app.impulsionalikes.com/
 - Card design:
   - Rounded corners (rounded-lg)
   - Padding: p-8 to p-12
@@ -142,7 +142,7 @@
 ## Special Features
 
 **Single-Page Focus**: No navigation, no distractions - entire page dedicated to platform selection
-**Fast navigation**: Click any platform card → continue through the curtidas.online store flow
+**Instant Redirect**: Click any platform card → immediate redirect to app.impulsionalikes.com
 **Conversion Optimized**: Clear hierarchy guiding user to action
 
 This design creates a clean, professional landing page that immediately communicates value and guides users to select their preferred platform.
